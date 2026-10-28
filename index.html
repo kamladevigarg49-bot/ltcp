@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CYBER VAULT V5.0 // ULTIMATE LTC & UPI BLOCKCHAIN OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ==========================================================================
+       CYBERPUNK NEON PINK & OBSIDIAN THEME ENGINE
+       ========================================================================== */
+    :root {
+      --bg: #030005;
+      --bg-darker: #010003;
+      --panel: rgba(14, 2, 20, 0.78);
+      --panel-glow: rgba(255, 0, 127, 0.12);
+      --card-bg: rgba(20, 3, 28, 0.65);
+      --card-border: rgba(255, 0, 127, 0.28);
+      --card-border-hover: rgba(255, 0, 127, 0.85);
+      
+      --pink: #ff007f;
+      --pink-neon: #ff1493;
+      --pink-glow: rgba(255, 0, 127, 0.55);
+      --pink-soft: #ff69b4;
+      --pink-dim: #33001a;
+      --pink-faint: rgba(255, 0, 127, 0.06);
+
+      --purple-neon: #d900ff;
+      --cyan-neon: #00f0ff;
+      --green: #00ffa3;
+      --green-glow: rgba(0, 255, 163, 0.4);
+      --amber: #ffb703;
+      --amber-glow: rgba(255, 183, 3, 0.4);
+      --red: #ff2a5f;
+      --red-glow: rgba(255, 42, 95, 0.4);
+
+      --text: #ffe8f4;
+      --text-muted: #af779d;
+      --text-dim: #704561;
+
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-title: 'Orbitron', sans-serif;
+      --font-ui: 'Rajdhani', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-mono);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Ambient CRT Scanline & Grain */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(255, 0, 127, 0.025) 3px,
+        rgba(255, 0, 127, 0.025) 4px
+      );
+    }
+
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* UI Layout Containers */
+    .app-wrapper {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 14px 100px;
+    }
+
+    /* Typography Utilities */
+    .title-orbitron {
+      font-family: var(--font-title);
+      letter-spacing: 1.5px;
+      font-weight: 800;
+    }
+
+    .neon-text-pink {
+      color: var(--pink);
+      text-shadow: 0 0 12px var(--pink-glow), 0 0 25px rgba(255, 0, 127, 0.3);
+    }
+
+    .neon-text-green {
+      color: var(--green);
+      text-shadow: 0 0 10px var(--green-glow);
+    }
+
+    .neon-text-amber {
+      color: var(--amber);
+      text-shadow: 0 0 10px var(--amber-glow);
+    }
+
+    .neon-text-red {
+      color: var(--red);
+      text-shadow: 0 0 10px var(--red-glow);
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #08000d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--pink-dim);
+      border-radius: 4px;
+      border: 1px solid var(--pink);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--pink);
+    }
+
+    /* ==========================================================================
+       LOGIN & AUTH TERMINAL MODAL
+       ========================================================================== */
+    #authOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 0, 4, 0.96);
+      backdrop-filter: blur(25px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+
+    .auth-terminal-card {
+      background: var(--panel);
+      border: 1.5px solid var(--pink);
+      box-shadow: 0 0 40px var(--pink-glow), inset 0 0 25px rgba(255, 0, 127, 0.15);
+      border-radius: 20px;
+      max-width: 440px;
+      width: 100%;
+      padding: 38px 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-terminal-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--pink), transparent);
+      animation: scanSweep 2.5s infinite linear;
+    }
+
+    @keyframes scanSweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .auth-logo-badge {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      background: #0d0014;
+      border: 2px solid var(--pink);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--pink);
+      box-shadow: 0 0 20px var(--pink-glow);
+    }
+
+    .auth-pass-input {
+      width: 100%;
+      background: #08000f;
+      border: 1.5px solid var(--pink-dim);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: var(--pink-soft);
+      font-size: 1.15rem;
+      letter-spacing: 3px;
+      text-align: center;
+      margin: 22px 0 16px;
+      outline: none;
+      transition: all 0.25s;
+    }
+
+    .auth-pass-input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 18px var(--pink-glow);
+    }
+
+    /* Primary Neon Buttons */
+    .btn-cyber-primary {
+      background: linear-gradient(135deg, var(--pink), #a80053);
+      border: 1px solid #ff77b9;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 13px 22px;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 0 20px var(--pink-glow);
+      transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .btn-cyber-primary:hover {
+      box-shadow: 0 0 32px var(--pink-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-cyber-primary:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-cyber-ghost {
+      background: rgba(30, 4, 38, 0.7);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .btn-cyber-ghost:hover {
+      color: #fff;
+      border-color: var(--pink);
+      box-shadow: 0 0 12px var(--pink-glow);
+    }
+
+    /* ==========================================================================
+       HEADER & LIVE TELEMETRY STATUS BAR
+       ========================================================================== */
+    header {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(16px);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-symbol {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #0f0017;
+      border: 1.5px solid var(--pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 15px var(--pink-glow);
+    }
+
+    .ticker-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      background: #07000c;
+      border: 1px solid var(--pink-dim);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-right: 1px solid rgba(255, 0, 127, 0.1);
+      padding-right: 10px;
+    }
+    .ticker-item:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulseAnim 1.6s infinite;
+      display: inline-block;
+      margin-right: 6px;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* ==========================================================================
+       PRIMARY NAVIGATION TABS
+       ========================================================================== */
+    .nav-tabs-wrapper {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .nav-tab-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 13px 16px;
+      background: rgba(16, 2, 24, 0.75);
+      border: 1px solid var(--pink-dim);
+      border-radius: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      transition: all 0.25s;
+    }
+
+    .nav-tab-btn.active {
+      background: linear-gradient(135deg, rgba(255, 0, 127, 0.28), rgba(64, 0, 32, 0.4));
+      border-color: var(--pink);
+      color: #fff;
+      box-shadow: 0 0 20px var(--pink-glow);
+    }
+
+    /* Sub Tabs (LTC / UPI) */
+    .sub-tabs-wrapper {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .sub-tab-btn {
+      flex: 1;
+      padding: 10px 14px;
+      background: #090010;
+      border: 1px solid var(--pink-dim);
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .sub-tab-btn.active {
+      background: var(--pink-dim);
+      border-color: var(--pink);
+      color: var(--pink-soft);
+      box-shadow: 0 0 10px var(--pink-glow);
+    }
+
+    /* ==========================================================================
+       CARDS & INTERACTIVE SECTIONS
+       ========================================================================== */
+    .cyber-card {
+      background: var(--panel);
+      border: 1.5px solid var(--card-border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 22px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .cyber-card:hover {
+      border-color: var(--card-border-hover);
+      box-shadow: 0 10px 45px rgba(255, 0, 127, 0.15);
+    }
+
+    .card-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .card-tag {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--pink-dim);
+      border: 1px solid var(--pink);
+      color: var(--pink-soft);
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* Quick Copy Box */
+    .quick-copy-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #06000c;
+      border: 1px dashed var(--pink);
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+
+    .quick-addr-text {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    /* ==========================================================================
+       4-TIER BLOCKCHAIN TELEMETRY METRICS
+       ========================================================================== */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .telemetry-node {
+      background: rgba(14, 1, 22, 0.75);
+      border: 1px solid var(--pink-dim);
+      padding: 16px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .telemetry-node:hover {
+      border-color: var(--pink);
+      transform: translateY(-2px);
+    }
+
+    .telemetry-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .telemetry-value {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: var(--font-title);
+    }
+
+    .telemetry-sub {
+      font-size: 0.78rem;
+      color: var(--pink-soft);
+      margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       DYNAMIC QR & INVOICE STUDIO
+       ========================================================================== */
+    .invoice-studio-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: center;
+      background: #06000c;
+      border: 1px solid var(--pink-dim);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 650px) {
+      .invoice-studio-grid {
+        grid-template-columns: auto 1fr;
+      }
+    }
+
+    .qr-frame {
+      padding: 12px;
+      background: #000;
+      border: 2px solid var(--pink);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--pink-glow);
+      margin: 0 auto;
+    }
+
+    .invoice-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cyber-input {
+      width: 100%;
+      background: #0a0112;
+      border: 1.5px solid var(--pink-dim);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .cyber-input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 14px var(--pink-glow);
+    }
+
+    /* ==========================================================================
+       ON-CHAIN TRANSACTIONS STREAM & FILTERS
+       ========================================================================== */
+    .stream-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-pill {
+      background: #0a0012;
+      border: 1px solid var(--pink-dim);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+
+    .filter-pill.active {
+      border-color: var(--pink);
+      color: var(--pink-soft);
+      background: var(--pink-dim);
+    }
+
+    .tx-stream-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .tx-stream-card {
+      background: rgba(14, 1, 22, 0.8);
+      border: 1px solid var(--pink-dim);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+      gap: 12px;
+    }
+
+    .tx-stream-card:hover {
+      border-color: var(--pink);
+      background: rgba(22, 2, 33, 0.9);
+      transform: translateX(2px);
+    }
+
+    .tx-badge {
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .badge-inflow {
+      background: rgba(0, 255, 163, 0.15);
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+
+    .badge-mempool {
+      background: rgba(255, 183, 3, 0.15);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+    }
+
+    .badge-outflow {
+      background: rgba(255, 42, 95, 0.15);
+      border: 1px solid var(--red);
+      color: var(--red);
+    }
+
+    .tx-hash-link {
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      word-break: break-all;
+      display: block;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tx-hash-link:hover {
+      color: var(--pink-soft);
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       A-Z UNIVERSAL ADDRESS INSPECTOR & SEARCH ENGINE
+       ========================================================================== */
+    .inspector-search-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-direction: column;
+    }
+
+    @media (min-width: 600px) {
+      .inspector-search-row {
+        flex-direction: row;
+      }
+    }
+
+    .inspector-result-panel {
+      display: none;
+      background: rgba(10, 1, 16, 0.9);
+      border: 1.5px solid var(--pink);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 0 30px var(--pink-glow);
+    }
+
+    /* ==========================================================================
+       ANALYTICS & CHARTS PANEL
+       ========================================================================== */
+    .chart-container-box {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      margin-top: 14px;
+    }
+
+    /* ==========================================================================
+       TOAST & AUDIO HUD NOTIFICATIONS
+       ========================================================================== */
+    #cyberToast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(140px);
+      background: rgba(20, 1, 30, 0.95);
+      border: 1.5px solid var(--pink);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 25px var(--pink-glow);
+      z-index: 9999;
+      transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #cyberToast.active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Print Slip Styles */
+    @media print {
+      body * { visibility: hidden; }
+      #printableReceipt, #printableReceipt * { visibility: visible; }
+      #printableReceipt { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ambient Scanlines & Particle Simulation -->
+  <div class="crt-overlay"></div>
+  <canvas id="particles"></canvas>
+
+  <!-- ==========================================================================
+       AUTHENTICATION GATEWAY MODAL
+       ========================================================================== -->
+  <div id="authOverlay">
+    <div class="auth-terminal-card">
+      <div class="auth-logo-badge">⚡</div>
+      <h1 class="title-orbitron neon-text-pink" style="font-size: 1.5rem;">VAULT ACCESS</h1>
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 6px;">
+        SECURE TERMINAL FOR LTC & UPI TELEMETRY
+      </p>
+      
+      <form onsubmit="handleAuthSubmit(event)">
+        <input 
+          type="password" 
+          id="passInput" 
+          class="auth-pass-input" 
+          placeholder="ENTER PASSKEY" 
+          autocomplete="off" 
+          autofocus 
+        />
+        <div id="authErrMsg" style="color: var(--red); font-size: 0.75rem; font-weight: 700; margin-bottom: 12px; display: none;">
+          ✖ INVALID CIPHER KEY. ACCESS REJECTED.
+        </div>
+        <button type="submit" class="btn-cyber-primary">INITIALIZE SESSION</button>
+      </form>
+
+      <div style="margin-top: 18px; font-size: 0.7rem; color: var(--text-dim);">
+        AES LOCAL ENCRYPTION // ZERO TELEMETRY LEAKS
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MAIN OS INTERFACE
+       ========================================================================== -->
+  <div class="app-wrapper" id="mainDashboard" style="display: none;">
+    <!-- HEADER BAR -->
+    <header>
+      <div class="header-top">
+        <div class="logo-container">
+          <div class="logo-symbol">Ł</div>
+          <div>
+            <div class="title-orbitron neon-text-pink" style="font-size: 1.2rem;">CYBER VAULT</div>
+            <div style="font-size: 0.68rem; color: var(--text-muted); letter-spacing: 1px;">
+              LTC MAINNET NODE & INSTANT UPI RELAY
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button class="btn-cyber-ghost" onclick="toggleMute()" id="muteBtn">🔊 SOUND ON</button>
+          <button class="btn-cyber-ghost" onclick="lockVault()">🔒 LOCK</button>
+        </div>
+      </div>
+
+      <!-- LIVE TELEMETRY TICKER -->
+      <div class="ticker-bar">
+        <div class="ticker-item">
+          <span style="color: var(--text-muted);">LTC / USD:</span>
+          <span id="rateUsd" class="neon-text-pink" style="font-weight: 800;">$...</span>
+        </div>
+        <div class="ticker-item">
+          <span style="color: var(--text-muted);">LTC / INR:</span>
+          <span id="rateInr" class="neon-text-pink" style="font-weight: 800;">₹...</span>
+        </div>
+        <div class="ticker-item">
+          <span style="color: var(--text-muted);">LTC / EUR:</span>
+          <span id="rateEur" class="neon-text-pink" style="font-weight: 800;">€...</span>
+        </div>
+        <div class="ticker-item" style="border-right: none;">
+          <div><span class="pulse-dot"></span><span style="color: var(--green); font-weight: 700;">WATCHER LIVE</span></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- OS NAVIGATION TABS -->
+    <div class="nav-tabs-wrapper">
+      <button class="nav-tab-btn active" id="tabBtnVault" onclick="switchMainTab('vault')">
+        ⚡ MY VAULT (PRIMARY)
+      </button>
+      <button class="nav-tab-btn" id="tabBtnExplore" onclick="switchMainTab('explore')">
+        🔍 A-Z EXPLORER
+      </button>
+      <button class="nav-tab-btn" id="tabBtnAnalytics" onclick="switchMainTab('analytics')">
+        📊 CHARTS & LEDGER
+      </button>
+      <button class="nav-tab-btn" id="tabBtnContacts" onclick="switchMainTab('contacts')">
+        📇 ADDRESS BOOK
+      </button>
+    </div>
+
+    <!-- ========================================================================
+         VIEW 1: MY VAULT (PRIMARY IDENTIFIERS)
+         ======================================================================== -->
+    <section id="viewVault">
+      <!-- SUB TABS: LTC VS UPI -->
+      <div class="sub-tabs-wrapper">
+        <button class="sub-tab-btn active" id="subBtnLtc" onclick="switchSubAsset('ltc')">
+          LITECOIN MAINNET (LTC)
+        </button>
+        <button class="sub-tab-btn" id="subBtnUpi" onclick="switchSubAsset('upi')">
+          UPI / INR INSTANT VPA
+        </button>
+      </div>
+
+      <!-- MAIN IDENTIFIER CARD -->
+      <div class="cyber-card">
+        <div class="card-header-bar">
+          <div style="font-size: 0.85rem; font-weight: 800; color: var(--pink-soft);">
+            <span id="assetHeaderLabel">PRIMARY WALLET DESTINATION</span>
+          </div>
+          <span class="card-tag" id="assetNetworkTag">LTC MAINNET</span>
+        </div>
+
+        <!-- QUICK 1-CLICK COPY ADDRESS STRIP -->
+        <div class="quick-copy-box">
+          <div class="quick-addr-text" id="primaryDisplayAddr">
+            LNnJKsd3cQLcdMezUov2KzQ2VtMmGocAc6
+          </div>
+          <button class="btn-cyber-primary" style="width: auto; padding: 10px 18px;" onclick="copyPrimaryAddress()">
+            COPY ⚡
+          </button>
+        </div>
+
+        <!-- 4-TIER TELEMETRY BREAKDOWN METRICS -->
+        <div class="telemetry-grid">
+          <!-- 1: CURRENT NET HOLDINGS -->
+          <div class="telemetry-node">
+            <div class="telemetry-label">CURRENT CONFIRMED BALANCE</div>
+            <div class="telemetry-value" id="valNetLtc">0.00000 LTC</div>
+            <div class="telemetry-sub" id="valNetFiat">≈ $0.00 / ₹0</div>
+          </div>
+
+          <!-- 2: TOTAL RECEIVED -->
+          <div class="telemetry-node">
+            <div class="telemetry-label">LIFETIME RECEIVED (A TO Z)</div>
+            <div class="telemetry-value neon-text-green" id="valTotalRecv">0.00000 LTC</div>
+            <div class="telemetry-sub" id="valRecvCount">0 incoming settlements</div>
+          </div>
+
+          <!-- 3: TOTAL PAID / SPENT OUT -->
+          <div class="telemetry-node">
+            <div class="telemetry-label">LIFETIME SENT / PAID</div>
+            <div class="telemetry-value neon-text-red" id="valTotalSent">0.00000 LTC</div>
+            <div class="telemetry-sub" id="valSentCount">Total Debited</div>
+          </div>
+
+          <!-- 4: HOLD / UNCONFIRMED MEMPOOL -->
+          <div class="telemetry-node">
+            <div class="telemetry-label">UNCONFIRMED / HOLD</div>
+            <div class="telemetry-value neon-text-amber" id="valHoldLtc">0.00000 LTC</div>
+            <div class="telemetry-sub" id="valHoldStatus">0 mempool pending</div>
+          </div>
+        </div>
+
+        <!-- DYNAMIC INVOICE & QR STUDIO -->
+        <div class="invoice-studio-grid">
+          <div class="qr-frame">
+            <div id="primaryQROutput"></div>
+          </div>
+          
+          <div class="invoice-form">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--pink-soft);">
+              ⚡ INSTANT INVOICE & PAYMENT REQUEST GENERATOR
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <input 
+                type="number" 
+                id="invoiceAmountInput" 
+                class="cyber-input" 
+                placeholder="Amount (e.g. 0.25)" 
+                step="any" 
+                oninput="generateDynamicInvoiceQR()" 
+              />
+              <button class="btn-cyber-primary" style="width: auto; white-space: nowrap;" onclick="copyInvoiceURI()">
+                COPY URI
+              </button>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-muted);" id="invoiceEquivalentText">
+              Enter amount to compute instant live fiat value and QR payload.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE TRANSACTION STREAM -->
+      <div class="cyber-card">
+        <div class="stream-toolbar">
+          <div>
+            <div class="title-orbitron neon-text-pink" style="font-size: 0.95rem;">
+              ON-CHAIN TRANSACTIONS STREAM
+            </div>
+            <div style="font-size: 0.7rem; color: var(--text-muted);">
+              LIVE BLOCKSTREAM VERIFICATION (FALLBACK RESILIENT)
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div class="filter-pills">
+              <span class="filter-pill active" onclick="filterTransactions('all', this)">ALL</span>
+              <span class="filter-pill" onclick="filterTransactions('recv', this)">RECEIVED</span>
+              <span class="filter-pill" onclick="filterTransactions('hold', this)">HOLD</span>
+            </div>
+            <button class="btn-cyber-ghost" onclick="fetchLiveBlockchainData()">REFRESH ⟳</button>
+          </div>
+        </div>
+
+        <div class="tx-stream-list" id="primaryTxContainer">
+          <div style="text-align: center; padding: 24px; color: var(--text-muted); font-size: 0.82rem;">
+            Connecting to high-speed blockchain nodes...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 2: A-Z ADDRESS EXPLORER
+         ======================================================================== -->
+    <section id="viewExplore" style="display: none;">
+      <div class="cyber-card">
+        <div class="title-orbitron neon-text-pink" style="font-size: 1.1rem; margin-bottom: 6px;">
+          UNIVERSAL LITECOIN BLOCKCHAIN INSPECTOR
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px;">
+          Inspect any Litecoin wallet address worldwide. Instantly retrieves entire lifetime balance, unconfirmed mempool hold, total received, total spent, and raw transaction records.
+        </p>
+
+        <div class="inspector-search-row">
+          <input 
+            type="text" 
+            id="targetSearchInput" 
+            class="cyber-input" 
+            placeholder="Paste LTC Address (e.g., L..., M..., or ltc1...)" 
+          />
+          <button class="btn-cyber-primary" style="width: auto; min-width: 160px;" onclick="executeTargetSearch()">
+            INSPECT CHAIN ⚡
+          </button>
+        </div>
+
+        <!-- SEARCH HISTORY QUICK PILLS -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;" id="searchHistoryWrap">
+          <span style="font-size: 0.7rem; color: var(--text-dim);">Recent Lookups:</span>
+          <!-- Dynamic Pills will populate here -->
+        </div>
+      </div>
+
+      <!-- INSPECTOR RESULT CARD -->
+      <div id="inspectorResultCard" class="cyber-card inspector-result-panel">
+        <div class="card-header-bar">
+          <div>
+            <span class="card-tag" style="background: rgba(0, 255, 163, 0.15); border-color: var(--green); color: var(--green);">
+              ON-CHAIN AUDIT COMPLETE
+            </span>
+            <div class="quick-addr-text" id="inspectedAddressText" style="margin-top: 8px;">...</div>
+          </div>
+          <button class="btn-cyber-ghost" onclick="copyInspectedAddress()">COPY</button>
+        </div>
+
+        <div class="telemetry-grid">
+          <div class="telemetry-node">
+            <div class="telemetry-label">CURRENT BALANCE</div>
+            <div class="telemetry-value" id="inspectedNetBal">0.00000 LTC</div>
+            <div class="telemetry-sub" id="inspectedFiatBal">≈ $0.00 / ₹0</div>
+          </div>
+          <div class="telemetry-node">
+            <div class="telemetry-label">LIFETIME RECEIVED</div>
+            <div class="telemetry-value neon-text-green" id="inspectedRecv">0.00000 LTC</div>
+            <div class="telemetry-sub" id="inspectedTxCount">0 Transactions</div>
+          </div>
+          <div class="telemetry-node">
+            <div class="telemetry-label">LIFETIME PAID / SENT</div>
+            <div class="telemetry-value neon-text-red" id="inspectedSent">0.00000 LTC</div>
+            <div class="telemetry-sub">Total Debited</div>
+          </div>
+          <div class="telemetry-node">
+            <div class="telemetry-label">HOLD / UNCONFIRMED</div>
+            <div class="telemetry-value neon-text-amber" id="inspectedHold">0.00000 LTC</div>
+            <div class="telemetry-sub">Mempool Transactions</div>
+          </div>
+        </div>
+
+        <div style="font-size: 0.85rem; font-weight: 800; color: var(--pink-soft); margin: 20px 0 10px;">
+          RECENT TRANSACTION ACTIVITY ON TARGET ADDRESS
+        </div>
+        <div class="tx-stream-list" id="inspectedTxContainer"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 3: ANALYTICS & VISUAL LEDGER
+         ======================================================================== -->
+    <section id="viewAnalytics" style="display: none;">
+      <div class="cyber-card">
+        <div class="title-orbitron neon-text-pink" style="font-size: 1.1rem; margin-bottom: 6px;">
+          PORTFOLIO TELEMETRY & TRANSACTION VISUALIZER
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+          Live distribution chart of lifetime LTC received, spent out, and current confirmed balance.
+        </p>
+
+        <div class="chart-container-box">
+          <canvas id="vaultChart"></canvas>
+        </div>
+      </div>
+
+      <!-- EXPORT / BACKUP UTILITIES -->
+      <div class="cyber-card">
+        <div class="title-orbitron neon-text-pink" style="font-size: 1.05rem; margin-bottom: 8px;">
+          LEDGER UTILITIES & DATA EXPORT
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn-cyber-primary" style="width: auto;" onclick="exportLedgerJSON()">
+            EXPORT LEDGER (JSON)
+          </button>
+          <button class="btn-cyber-ghost" onclick="exportLedgerCSV()">
+            EXPORT CSV SPREADSHEET
+          </button>
+          <button class="btn-cyber-ghost" onclick="clearLocalLogs()">
+            PURGE CACHED SESSION
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 4: SAVED ADDRESS BOOK & CONTACTS
+         ======================================================================== -->
+    <section id="viewContacts" style="display: none;">
+      <div class="cyber-card">
+        <div class="card-header-bar">
+          <div class="title-orbitron neon-text-pink" style="font-size: 1.1rem;">
+            SAVED CLIENTS & FREQUENT WALLETS
+          </div>
+          <button class="btn-cyber-primary" style="width: auto; padding: 8px 14px; font-size: 0.75rem;" onclick="showAddContactModal()">
+            + ADD WALLET
+          </button>
+        </div>
+
+        <div id="contactsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px;">
+          <!-- Contacts will render here -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="cyberToast">
+    <span>⚡</span>
+    <span id="toastMsg">OPERATION COMPLETE</span>
+  </div>
+
+  <!-- ADD CONTACT MODAL -->
+  <div id="contactModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 16px;">
+    <div class="cyber-card" style="max-width: 400px; width: 100%; border-color: var(--pink);">
+      <div class="card-header-bar">
+        <div class="title-orbitron neon-text-pink" style="font-size: 1rem;">SAVE NEW CONTACT</div>
+        <button class="btn-cyber-ghost" onclick="closeAddContactModal()">✕</button>
+      </div>
+      <form onsubmit="saveNewContact(event)" style="display: flex; flex-direction: column; gap: 10px;">
+        <input type="text" id="newContactAlias" class="cyber-input" placeholder="Alias Name (e.g. VIP Client 1)" required />
+        <input type="text" id="newContactAddr" class="cyber-input" placeholder="LTC Address or UPI ID" required />
+        <select id="newContactType" class="cyber-input">
+          <option value="ltc">Litecoin (LTC)</option>
+          <option value="upi">UPI ID (INR)</option>
+        </select>
+        <button type="submit" class="btn-cyber-primary" style="margin-top: 10px;">SAVE TO VAULT</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       CORE ARCHITECTURE & LOGIC ENGINE
+       ========================================================================== -->
+  <script>
+    // --------------------------------------------------------------------------
+    // CONFIGURATION CONSTANTS
+    // --------------------------------------------------------------------------
+    const CONFIG = {
+      PASSKEY: "uniquee",
+      PRIMARY_LTC: "LNnJKsd3cQLcdMezUov2KzQ2VtMmGocAc6",
+      PRIMARY_UPI: "wannabenaman@fam",
+      REFRESH_INTERVAL_MS: 30000,
+      APIS: {
+        BLOCKCYPHER: "https://api.blockcypher.com/v1/ltc/main/addrs/",
+        BLOCKCHAIR: "https://api.blockchair.com/litecoin/dashboards/address/",
+        COINGECKO: "https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd,inr,eur"
+      }
+    };
+
+    // Global State
+    let AppState = {
+      isAuth: false,
+      soundEnabled: true,
+      currentAsset: 'ltc', // 'ltc' | 'upi'
+      currentTab: 'vault',
+      rates: { usd: 0, inr: 0, eur: 0 },
+      primaryLtcData: {
+        finalBalance: 0,
+        totalRecv: 0,
+        totalSent: 0,
+        unconfirmedBalance: 0,
+        txs: []
+      },
+      inspectedData: null,
+      searchHistory: [],
+      contacts: [],
+      chartInstance: null
+    };
+
+    // --------------------------------------------------------------------------
+    // SOUND EFFECTS ENGINE (Synthesizer via Web Audio API)
+    // --------------------------------------------------------------------------
+    class CyberAudio {
+      static initContext() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+
+      static playTone(freq = 880, type = 'sine', duration = 0.25, gainVal = 0.15) {
+        if (!AppState.soundEnabled) return;
+        try {
+          this.initContext();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) {}
+      }
+
+      static playSuccess() {
+        this.playTone(523.25, 'sine', 0.12, 0.12);
+        setTimeout(() => this.playTone(659.25, 'sine', 0.12, 0.12), 100);
+        setTimeout(() => this.playTone(1046.50, 'sine', 0.25, 0.15), 200);
+      }
+
+      static playDing() {
+        this.playTone(1318.51, 'sine', 0.35, 0.18);
+      }
+
+      static playDeny() {
+        this.playTone(150, 'sawtooth', 0.25, 0.15);
+      }
+    }
+
+    function toggleMute() {
+      AppState.soundEnabled = !AppState.soundEnabled;
+      document.getElementById('muteBtn').innerText = AppState.soundEnabled ? "🔊 SOUND ON" : "🔇 MUTED";
+      showToast(AppState.soundEnabled ? "AUDIO PROTOCOLS ENABLED" : "AUDIO MUTED");
+    }
+
+    // --------------------------------------------------------------------------
+    // AUTHENTICATION LOGIC
+    // --------------------------------------------------------------------------
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const pass = document.getElementById('passInput').value;
+      const err = document.getElementById('authErrMsg');
+
+      if (pass === CONFIG.PASSKEY) {
+        AppState.isAuth = true;
+        sessionStorage.setItem('cyber_vault_auth', '1');
+        document.getElementById('authOverlay').style.opacity = '0';
+        setTimeout(() => {
+          document.getElementById('authOverlay').style.display = 'none';
+          document.getElementById('mainDashboard').style.display = 'block';
+        }, 300);
+
+        CyberAudio.playSuccess();
+        initDashboard();
+        showToast("TERMINAL DECRYPTED. WELCOME.");
+      } else {
+        CyberAudio.playDeny();
+        err.style.display = 'block';
+        document.getElementById('passInput').value = '';
+      }
+    }
+
+    function lockVault() {
+      sessionStorage.removeItem('cyber_vault_auth');
+      document.getElementById('authOverlay').style.display = 'flex';
+      document.getElementById('authOverlay').style.opacity = '1';
+      document.getElementById('mainDashboard').style.display = 'none';
+      document.getElementById('passInput').value = '';
+      document.getElementById('authErrMsg').style.display = 'none';
+      AppState.isAuth = false;
+      CyberAudio.playTone(300, 'sine', 0.2);
+    }
+
+    // --------------------------------------------------------------------------
+    // TOAST & FEEDBACK UTILITIES
+    // --------------------------------------------------------------------------
+    function showToast(msg) {
+      const toast = document.getElementById('cyberToast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.add('active');
+      setTimeout(() => toast.classList.remove('active'), 2200);
+    }
+
+    function triggerConfetti() {
+      try {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.7 },
+          colors: ['#ff007f', '#ffffff', '#00ffa3', '#ff69b4']
+        });
+      } catch (e) {}
+    }
+
+    // --------------------------------------------------------------------------
+    // TABS & ASSET NAVIGATION
+    // --------------------------------------------------------------------------
+    function switchMainTab(tab) {
+      AppState.currentTab = tab;
+      const tabs = ['vault', 'explore', 'analytics', 'contacts'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`view${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+        if (view) view.style.display = t === tab ? 'block' : 'none';
+        if (btn) btn.classList.toggle('active', t === tab);
+      });
+
+      if (tab === 'analytics') {
+        renderAnalyticsChart();
+      }
+      CyberAudio.playTone(700, 'sine', 0.1);
+    }
+
+    function switchSubAsset(asset) {
+      AppState.currentAsset = asset;
+      document.getElementById('subBtnLtc').classList.toggle('active', asset === 'ltc');
+      document.getElementById('subBtnUpi').classList.toggle('active', asset === 'upi');
+
+      if (asset === 'ltc') {
+        document.getElementById('assetHeaderLabel').innerText = "PRIMARY LTC IDENTIFIER";
+        document.getElementById('assetNetworkTag').innerText = "LTC MAINNET";
+        document.getElementById('primaryDisplayAddr').innerText = CONFIG.PRIMARY_LTC;
+        fetchLiveBlockchainData();
+      } else {
+        document.getElementById('assetHeaderLabel').innerText = "PRIMARY UPI VPA";
+        document.getElementById('assetNetworkTag').innerText = "NPCI / INR";
+        document.getElementById('primaryDisplayAddr').innerText = CONFIG.PRIMARY_UPI;
+        renderUpiState();
+      }
+      generateDynamicInvoiceQR();
+      CyberAudio.playTone(850, 'sine', 0.1);
+    }
+
+    // --------------------------------------------------------------------------
+    // COPY HANDLERS
+    // --------------------------------------------------------------------------
+    function copyPrimaryAddress() {
+      const addr = document.getElementById('primaryDisplayAddr').innerText;
+      navigator.clipboard.writeText(addr);
+      showToast("PRIMARY IDENTIFIER COPIED ⚡");
+      CyberAudio.playDing();
+      triggerConfetti();
+    }
+
+    function copyInvoiceURI() {
+      const amt = document.getElementById('invoiceAmountInput').value;
+      let payload = "";
+      if (AppState.currentAsset === 'ltc') {
+        payload = amt ? `litecoin:${CONFIG.PRIMARY_LTC}?amount=${amt}` : CONFIG.PRIMARY_LTC;
+      } else {
+        payload = amt ? `upi://pay?pa=${CONFIG.PRIMARY_UPI}&pn=Naman&am=${amt}&cu=INR` : CONFIG.PRIMARY_UPI;
+      }
+      navigator.clipboard.writeText(payload);
+      showToast("INVOICE URI COPIED TO CLIPBOARD");
+      CyberAudio.playDing();
+    }
+
+    // --------------------------------------------------------------------------
+    // DYNAMIC QR ENGINE
+    // --------------------------------------------------------------------------
+    function generateDynamicInvoiceQR() {
+      const qrCont = document.getElementById('primaryQROutput');
+      qrCont.innerHTML = '';
+      const amt = document.getElementById('invoiceAmountInput').value;
+      let uri = "";
+
+      if (AppState.currentAsset === 'ltc') {
+        uri = amt ? `litecoin:${CONFIG.PRIMARY_LTC}?amount=${amt}` : `litecoin:${CONFIG.PRIMARY_LTC}`;
+        if (amt && AppState.rates.usd > 0) {
+          const u = (parseFloat(amt) * AppState.rates.usd).toFixed(2);
+          const i = (parseFloat(amt) * AppState.rates.inr).toFixed(0);
+          document.getElementById('invoiceEquivalentText').innerText = `Amount: ${amt} LTC ≈ $${u} USD / ₹${Number(i).toLocaleString('en-IN')} INR`;
+        } else {
+          document.getElementById('invoiceEquivalentText').innerText = "Dynamic URI ready for mobile wallet scanner.";
+        }
+      } else {
+        uri = amt ? `upi://pay?pa=${CONFIG.PRIMARY_UPI}&pn=Naman&am=${amt}&cu=INR` : `upi://pay?pa=${CONFIG.PRIMARY_UPI}&pn=Naman&cu=INR`;
+        document.getElementById('invoiceEquivalentText').innerText = amt ? `INR Request: ₹${amt}` : "Instant UPI scan string.";
+      }
+
+      new QRCode(qrCont, {
+        text: uri,
+        width: 140,
+        height: 140,
+        colorDark: "#ff007f",
+        colorLight: "#000000",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // COINGECKO LIVE MARKET TELEMETRY
+    // --------------------------------------------------------------------------
+    async function fetchLiveMarketRates() {
+      try {
+        const res = await fetch(CONFIG.APIS.COINGECKO);
+        const data = await res.json();
+        AppState.rates.usd = data.litecoin.usd;
+        AppState.rates.inr = data.litecoin.inr;
+        AppState.rates.eur = data.litecoin.eur;
+
+        document.getElementById('rateUsd').innerText = `$${AppState.rates.usd.toFixed(2)}`;
+        document.getElementById('rateInr').innerText = `₹${AppState.rates.inr.toLocaleString('en-IN')}`;
+        document.getElementById('rateEur').innerText = `€${AppState.rates.eur.toFixed(2)}`;
+
+        updatePrimaryFiatCalculations();
+      } catch (e) {
+        console.warn("Market rate poller fallback active.");
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // BLOCKCHAIN FETCH ENGINE (Primary LTC with Fallback)
+    // --------------------------------------------------------------------------
+    async function fetchLiveBlockchainData() {
+      if (AppState.currentAsset !== 'ltc') return;
+
+      try {
+        // Attempt 1: BlockCypher API
+        const res = await fetch(`${CONFIG.APIS.BLOCKCYPHER}${CONFIG.PRIMARY_LTC}`);
+        if (!res.ok) throw new Error("BlockCypher limit reached");
+        const data = await res.json();
+
+        const confirmedLtc = ((data.final_balance || data.balance) / 1e8) || 0;
+        const totalRecvLtc = (data.total_received / 1e8) || 0;
+        const totalSentLtc = (data.total_sent / 1e8) || 0;
+        const holdLtc = (data.unconfirmed_balance / 1e8) || 0;
+
+        AppState.primaryLtcData.finalBalance = confirmedLtc;
+        AppState.primaryLtcData.totalRecv = totalRecvLtc;
+        AppState.primaryLtcData.totalSent = totalSentLtc;
+        AppState.primaryLtcData.unconfirmedBalance = holdLtc;
+        AppState.primaryLtcData.txs = data.txrefs || [];
+
+        renderPrimaryMetrics();
+        renderPrimaryTxStream(AppState.primaryLtcData.txs);
+      } catch (err) {
+        console.warn("Attempting Blockchair secondary fallback...");
+        fetchBlockchairFallback(CONFIG.PRIMARY_LTC, true);
+      }
+    }
+
+    async function fetchBlockchairFallback(address, isPrimary = true) {
+      try {
+        const res = await fetch(`${CONFIG.APIS.BLOCKCHAIR}${address}`);
+        const data = await res.json();
+        const info = data.data[address].address;
+
+        const confirmedLtc = (info.balance / 1e8) || 0;
+        const totalRecvLtc = (info.received / 1e8) || 0;
+        const totalSentLtc = (info.spent / 1e8) || 0;
+        const holdLtc = (info.unconfirmed_balance / 1e8) || 0;
+
+        if (isPrimary) {
+          AppState.primaryLtcData.finalBalance = confirmedLtc;
+          AppState.primaryLtcData.totalRecv = totalRecvLtc;
+          AppState.primaryLtcData.totalSent = totalSentLtc;
+          AppState.primaryLtcData.unconfirmedBalance = holdLtc;
+          renderPrimaryMetrics();
+        }
+      } catch (e) {
+        console.error("All public fallback nodes throttled. Retry in next cycle.");
+      }
+    }
+
+    function renderPrimaryMetrics() {
+      const d = AppState.primaryLtcData;
+      document.getElementById('valNetLtc').innerText = `${d.finalBalance.toFixed(5)} LTC`;
+      document.getElementById('valTotalRecv').innerText = `${d.totalRecv.toFixed(5)} LTC`;
+      document.getElementById('valTotalSent').innerText = `${d.totalSent.toFixed(5)} LTC`;
+      document.getElementById('valHoldLtc').innerText = `${d.unconfirmedBalance.toFixed(5)} LTC`;
+
+      document.getElementById('valRecvCount').innerText = `${d.txs.length} lifetime blocks`;
+      document.getElementById('valHoldStatus').innerText = d.unconfirmedBalance > 0 ? "⚠️ Incoming pending" : "All blocks confirmed";
+
+      updatePrimaryFiatCalculations();
+    }
+
+    function updatePrimaryFiatCalculations() {
+      const b = AppState.primaryLtcData.finalBalance;
+      if (AppState.rates.usd > 0) {
+        const u = (b * AppState.rates.usd).toFixed(2);
+        const i = (b * AppState.rates.inr).toFixed(0);
+        document.getElementById('valNetFiat').innerText = `≈ $${u} USD / ₹${Number(i).toLocaleString('en-IN')} INR`;
+      }
+    }
+
+    function renderPrimaryTxStream(txs) {
+      const cont = document.getElementById('primaryTxContainer');
+      if (!txs || txs.length === 0) {
+        cont.innerHTML = `<div style="text-align: center; padding: 22px; color: var(--text-muted);">NO RECENT ON-CHAIN TRANSACTIONS FOUND</div>`;
+        return;
+      }
+
+      cont.innerHTML = '';
+      txs.slice(0, 15).forEach(tx => {
+        const val = (tx.value / 1e8).toFixed(5);
+        const confs = tx.confirmations || 0;
+        let badge = `<span class="tx-badge badge-inflow">RECEIVED</span>`;
+        if (confs === 0) {
+          badge = `<span class="tx-badge badge-mempool">HOLD (0 CONFIRMATIONS)</span>`;
+        }
+
+        cont.innerHTML += `
+          <div class="tx-stream-card">
+            <div>
+              ${badge}
+              <a href="https://blockchair.com/litecoin/transaction/${tx.tx_hash}" target="_blank" class="tx-hash-link">
+                TX: ${tx.tx_hash}
+              </a>
+              <div style="font-size: 0.68rem; color: var(--text-dim); margin-top: 4px;">
+                Confirmations: ${confs} Blocks
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.95rem; font-weight: 800; color: #fff;">+${val} LTC</div>
+              <div style="font-size: 0.72rem; color: var(--pink-soft);">
+                ≈ $${(val * AppState.rates.usd).toFixed(2)}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function filterTransactions(type, pillEl) {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pillEl.classList.add('active');
+
+      const all = AppState.primaryLtcData.txs;
+      if (type === 'recv') {
+        renderPrimaryTxStream(all.filter(t => (t.confirmations || 0) > 0));
+      } else if (type === 'hold') {
+        renderPrimaryTxStream(all.filter(t => (t.confirmations || 0) === 0));
+      } else {
+        renderPrimaryTxStream(all);
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // UPI VIEW HANDLER
+    // --------------------------------------------------------------------------
+    function renderUpiState() {
+      document.getElementById('valNetLtc').innerText = "DIRECT INR";
+      document.getElementById('valTotalRecv').innerText = "INSTANT VPA";
+      document.getElementById('valTotalSent').innerText = "BANK SETTLED";
+      document.getElementById('valHoldLtc').innerText = "0 PENDING";
+      document.getElementById('valNetFiat').innerText = "₹ NPCI GATEWAY";
+
+      document.getElementById('primaryTxContainer').innerHTML = `
+        <div style="background: #08000f; border: 1px solid var(--pink-dim); border-radius: 10px; padding: 18px;">
+          <div class="title-orbitron neon-text-pink" style="font-size: 0.9rem; margin-bottom: 6px;">
+            UPI DIRECT SETTLEMENT DESTINATION
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+            Direct VPA: <b style="color: #fff;">${CONFIG.PRIMARY_UPI}</b><br/>
+            All UPI transactions route directly to the underlying Indian banking infrastructure. Scan the dynamic QR code above with Google Pay, PhonePe, Paytm, or BHIM.
+          </div>
+        </div>
+      `;
+    }
+
+    // --------------------------------------------------------------------------
+    // A-Z UNIVERSAL WALLET INSPECTOR & EXPLORER
+    // --------------------------------------------------------------------------
+    async function executeTargetSearch() {
+      const target = document.getElementById('targetSearchInput').value.trim();
+      if (!target) {
+        showToast("PLEASE PASTE A VALID LTC ADDRESS");
+        CyberAudio.playDeny();
+        return;
+      }
+
+      CyberAudio.playTone(600, 'sine', 0.1);
+      const panel = document.getElementById('inspectorResultCard');
+      panel.style.display = 'block';
+      document.getElementById('inspectedAddressText').innerText = target;
+      document.getElementById('inspectedTxContainer').innerHTML = `
+        <div style="text-align: center; padding: 20px; color: var(--text-muted);">
+          Connecting to public blockchain node...
+        </div>
+      `;
+
+      addSearchHistoryPill(target);
+
+      try {
+        const res = await fetch(`${CONFIG.APIS.BLOCKCYPHER}${target}`);
+        const data = await res.json();
+
+        if (data.error) {
+          document.getElementById('inspectedTxContainer').innerHTML = `
+            <div style="text-align: center; padding: 20px; color: var(--red);">
+              Address not found or no transaction history on Litecoin chain.
+            </div>
+          `;
+          return;
+        }
+
+        const bal = ((data.final_balance || data.balance) / 1e8) || 0;
+        const recv = (data.total_received / 1e8) || 0;
+        const sent = (data.total_sent / 1e8) || 0;
+        const hold = (data.unconfirmed_balance / 1e8) || 0;
+
+        document.getElementById('inspectedNetBal').innerText = `${bal.toFixed(5)} LTC`;
+        document.getElementById('inspectedRecv').innerText = `${recv.toFixed(5)} LTC`;
+        document.getElementById('inspectedSent').innerText = `${sent.toFixed(5)} LTC`;
+        document.getElementById('inspectedHold').innerText = `${hold.toFixed(5)} LTC`;
+        document.getElementById('inspectedTxCount').innerText = `${data.n_tx || 0} Total Lifetime Tx`;
+
+        if (AppState.rates.usd > 0) {
+          const u = (bal * AppState.rates.usd).toFixed(2);
+          const i = (bal * AppState.rates.inr).toFixed(0);
+          document.getElementById('inspectedFiatBal').innerText = `≈ $${u} USD / ₹${Number(i).toLocaleString('en-IN')} INR`;
+        }
+
+        renderInspectedTxStream(data.txrefs || []);
+        CyberAudio.playSuccess();
+      } catch (err) {
+        document.getElementById('inspectedTxContainer').innerHTML = `
+          <div style="text-align: center; padding: 20px; color: var(--red);">
+            Failed to fetch address. Rate limit exceeded or offline node.
+          </div>
+        `;
+      }
+    }
+
+    function renderInspectedTxStream(txs) {
+      const cont = document.getElementById('inspectedTxContainer');
+      if (!txs || txs.length === 0) {
+        cont.innerHTML = `<div style="text-align: center; padding: 20px; color: var(--text-muted);">NO RECENT ON-CHAIN TRANSACTIONS FOUND</div>`;
+        return;
+      }
+
+      cont.innerHTML = '';
+      txs.slice(0, 10).forEach(tx => {
+        const val = (tx.value / 1e8).toFixed(5);
+        const confs = tx.confirmations || 0;
+        let badge = `<span class="tx-badge badge-inflow">RECEIVED</span>`;
+        if (confs === 0) badge = `<span class="tx-badge badge-mempool">UNCONFIRMED HOLD</span>`;
+
+        cont.innerHTML += `
+          <div class="tx-stream-card">
+            <div>
+              ${badge}
+              <div class="tx-hash-link">TX: ${tx.tx_hash}</div>
+              <div style="font-size: 0.68rem; color: var(--text-dim); margin-top: 4px;">Confirmations: ${confs} Blocks</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 800; color: #fff;">+${val} LTC</div>
+              <div style="font-size: 0.72rem; color: var(--pink-soft);">≈ $${(val * AppState.rates.usd).toFixed(2)}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function copyInspectedAddress() {
+      const a = document.getElementById('inspectedAddressText').innerText;
+      navigator.clipboard.writeText(a);
+      showToast("INSPECTED ADDRESS COPIED");
+      CyberAudio.playDing();
+    }
+
+    function addSearchHistoryPill(addr) {
+      if (!AppState.searchHistory.includes(addr)) {
+        AppState.searchHistory.unshift(addr);
+        if (AppState.searchHistory.length > 5) AppState.searchHistory.pop();
+        renderSearchHistoryPills();
+      }
+    }
+
+    function renderSearchHistoryPills() {
+      const wrap = document.getElementById('searchHistoryWrap');
+      wrap.innerHTML = '<span style="font-size: 0.7rem; color: var(--text-dim);">Recent Lookups:</span>';
+      AppState.searchHistory.forEach(a => {
+        const span = document.createElement('span');
+        span.className = 'filter-pill';
+        span.innerText = a.substring(0, 8) + '...';
+        span.onclick = () => {
+          document.getElementById('targetSearchInput').value = a;
+          executeTargetSearch();
+        };
+        wrap.appendChild(span);
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // ANALYTICS & CHART.JS VISUALIZER
+    // --------------------------------------------------------------------------
+    function renderAnalyticsChart() {
+      const ctx = document.getElementById('vaultChart');
+      if (!ctx) return;
+
+      if (AppState.chartInstance) {
+        AppState.chartInstance.destroy();
+      }
+
+      const d = AppState.primaryLtcData;
+      AppState.chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Current Balance', 'Lifetime Inflow', 'Lifetime Outflow', 'Mempool Hold'],
+          datasets: [{
+            label: 'LTC Distribution',
+            data: [d.finalBalance, d.totalRecv, d.totalSent, d.unconfirmedBalance],
+            backgroundColor: [
+              '#ff007f',
+              '#00ffa3',
+              '#ff2a5f',
+              '#ffb703'
+            ],
+            borderColor: '#ffffff',
+            borderWidth: 1,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              grid: { color: 'rgba(255, 0, 127, 0.1)' },
+              ticks: { color: '#af779d', font: { family: 'JetBrains Mono' } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#ffe8f4', font: { family: 'JetBrains Mono' } }
+            }
+          }
+        }
+      });
+    }
+
+    function exportLedgerJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(AppState.primaryLtcData, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = `CyberVault_Ledger_${Date.now()}.json`;
+      a.click();
+      showToast("JSON LEDGER EXPORTED");
+    }
+
+    function exportLedgerCSV() {
+      let csv = "TX_HASH,VALUE_LTC,CONFIRMATIONS\n";
+      AppState.primaryLtcData.txs.forEach(t => {
+        csv += `${t.tx_hash},${(t.value/1e8).toFixed(6)},${t.confirmations || 0}\n`;
+      });
+      const dataStr = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = `CyberVault_Transactions_${Date.now()}.csv`;
+      a.click();
+      showToast("CSV EXPORT COMPLETE");
+    }
+
+    function clearLocalLogs() {
+      if (confirm("Reset local cache and purge temporary memory?")) {
+        sessionStorage.clear();
+        location.reload();
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // SAVED CONTACTS MODULE
+    // --------------------------------------------------------------------------
+    function showAddContactModal() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+
+    function closeAddContactModal() {
+      document.getElementById('contactModal').style.display = 'none';
+    }
+
+    function saveNewContact(e) {
+      e.preventDefault();
+      const alias = document.getElementById('newContactAlias').value.trim();
+      const addr = document.getElementById('newContactAddr').value.trim();
+      const type = document.getElementById('newContactType').value;
+
+      AppState.contacts.push({ id: Date.now(), alias, addr, type });
+      localStorage.setItem('cyber_contacts', JSON.stringify(AppState.contacts));
+      renderContactsGrid();
+      closeAddContactModal();
+      showToast("CONTACT SAVED TO VAULT");
+      CyberAudio.playSuccess();
+    }
+
+    function renderContactsGrid() {
+      const grid = document.getElementById('contactsGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      if (AppState.contacts.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem;">NO CONTACTS SAVED YET</div>`;
+        return;
+      }
+
+      AppState.contacts.forEach(c => {
+        const d = document.createElement('div');
+        d.className = 'telemetry-node';
+        d.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="font-weight: 800; color: #fff;">${c.alias}</div>
+            <button style="background: none; border: none; color: var(--red); cursor: pointer;" onclick="deleteContact(${c.id})">✕</button>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--pink-soft); word-break: break-all; margin: 6px 0;">${c.addr}</div>
+          <button class="btn-cyber-ghost" style="width: 100%; padding: 4px; font-size: 0.7rem;" onclick="navigator.clipboard.writeText('${c.addr}'); showToast('COPIED!');">
+            COPY ADDRESS
+          </button>
+        `;
+        grid.appendChild(d);
+      });
+    }
+
+    function deleteContact(id) {
+      AppState.contacts = AppState.contacts.filter(c => c.id !== id);
+      localStorage.setItem('cyber_contacts', JSON.stringify(AppState.contacts));
+      renderContactsGrid();
+      showToast("CONTACT REMOVED");
+    }
+
+    // --------------------------------------------------------------------------
+    // ADVANCED NEON INTERACTIVE CONSTELLATION PARTICLES
+    // --------------------------------------------------------------------------
+    function initializeConstellationCanvas() {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      const numParticles = Math.min(Math.floor((w * h) / 12000), 90);
+      const particles = Array.from({ length: numParticles }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.75,
+        vy: (Math.random() - 0.5) * 0.75,
+        radius: Math.random() * 2.2 + 0.8,
+        color: Math.random() > 0.25 ? '#ff007f' : '#00ffa3'
+      }));
+
+      let mouse = { x: null, y: null, maxDist: 140 };
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      window.addEventListener('mouseout', () => {
+        mouse.x = null;
+        mouse.y = null;
+      });
+
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+
+          // Mouse repel interaction
+          if (mouse.x !== null) {
+            const dx = p.x - mouse.x;
+            const dy = p.y - mouse.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < mouse.maxDist) {
+              const force = (mouse.maxDist - dist) / mouse.maxDist;
+              p.x += (dx / dist) * force * 3;
+              p.y += (dy / dist) * force * 3;
+            }
+          }
+
+          // Draw node
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = p.color;
+          ctx.fill();
+
+          // Connect nearby nodes
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+            if (dist < 115) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(255, 0, 127, ${0.25 * (1 - dist / 115)})`;
+              ctx.lineWidth = 0.8;
+              ctx.shadowBlur = 0;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+    }
+
+    // --------------------------------------------------------------------------
+    // DASHBOARD INITIALIZATION
+    // --------------------------------------------------------------------------
+    function initDashboard() {
+      fetchLiveMarketRates();
+      fetchLiveBlockchainData();
+      generateDynamicInvoiceQR();
+
+      try {
+        const saved = localStorage.getItem('cyber_contacts');
+        if (saved) AppState.contacts = JSON.parse(saved);
+        renderContactsGrid();
+      } catch (e) {}
+
+      // Background Watcher
+      setInterval(() => {
+        fetchLiveMarketRates();
+        fetchLiveBlockchainData();
+      }, CONFIG.REFRESH_INTERVAL_MS);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initializeConstellationCanvas();
+
+      if (sessionStorage.getItem('cyber_vault_auth') === '1') {
+        AppState.isAuth = true;
+        document.getElementById('authOverlay').style.display = 'none';
+        document.getElementById('mainDashboard').style.display = 'block';
+        initDashboard();
+      }
+    });
+  </script>
+</body>
+</html>
